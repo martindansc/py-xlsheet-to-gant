@@ -15,7 +15,7 @@ df = df.reset_index()
 proj_start = df.Start.min()# number of days from project start to task start
 df['start_num'] = df.Start# number of days from project start to end of tasks
 df['end_num'] = df.End-proj_start# days between start and end of each task
-df['days_start_to_end'] = df.end_num - df.start_num + 1
+df['days_start_to_end'] = df.end_num - df.start_num
 
 ##### PLOT #####
 fig, (ax, ax1) = plt.subplots(2, figsize=(16,6), gridspec_kw={'height_ratios':[6, 1]}, facecolor='#36454F')
@@ -44,7 +44,7 @@ ax.set_yticks([])
 plt.setp([ax.get_xticklines()], color='w')
 
 # align x axis
-ax.set_xlim(0, df.end_num.max())
+ax.set_xlim(0, df.end_num.max() + 1)
 
 # remove spines
 ax.spines['right'].set_visible(False)
@@ -59,7 +59,7 @@ plt.suptitle(sheet_name, color='w')
 legend_elements = []
 departments = df.Department.unique()
 print(departments)
-for dep_name in departments:
+for dep_name in reversed(departments):
     dep = df.loc[df['Department'] == dep_name]
     legend_elements.append(Patch(facecolor=dep.iloc[0]['Color'], label=dep_name))
 
